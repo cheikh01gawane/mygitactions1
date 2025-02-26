@@ -1,0 +1,47 @@
+name: CI/CD Pipeline
+
+on:
+  push:
+    branches:
+      - main   # Déclenche le pipeline sur chaque push sur la branche 'main'
+  pull_request:
+    branches:
+      - main   # Déclenche également lors d'une PR vers 'main'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest   # Utilise une machine virtuelle Ubuntu
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2   # Récupère le code du dépôt
+
+      - name: Set up Python (si nécessaire)
+        uses: actions/setup-python@v2
+        with:
+          python-version: '3.x'   # Remplacez par votre version
+
+      - name: Install dependencies
+        run: |
+          sudo apt update
+          sudo apt install -y build-essential  # Installe les outils de compilation
+          sudo apt install -y <autres dépendances>  # Ajoutez des dépendances nécessaires à votre projet
+
+      - name: Run tests (si nécessaire)
+        run: |
+          # Exemple pour un projet Node.js
+          npm install
+          npm test
+        
+      - name: Build project (si nécessaire)
+        run: |
+          # Exemple pour un projet Node.js ou autre
+          npm run build
+
+      - name: Deploy (si nécessaire)
+        run: |
+          # Exemple de déploiement avec scp
+          scp -r ./build user@yourserver:/path/to/deploy
+        env:
+          DEPLOY_KEY: ${{ secrets.DEPLOY_KEY }}   # Utilisez un secret pour la clé de déploiement
+
