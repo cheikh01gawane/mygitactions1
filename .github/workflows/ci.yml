@@ -1,4 +1,4 @@
-name: Node.js CI
+name: Node.js CI with security tools
 
 on:
   push:
@@ -24,5 +24,12 @@ jobs:
       - name: Install dependencies
         run: npm install
 
+      # Ajoute ici l'étape pour Super-Linter
+      - name: Run Super-Linter
+        uses: github/super-linter@v4
+        env:
+          RUN_LOCAL: false
+
       - name: Run tests
         run: npm test
+
