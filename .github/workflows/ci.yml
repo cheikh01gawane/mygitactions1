@@ -24,11 +24,11 @@ jobs:
       - name: Install dependencies
         run: npm install
 
-      # Ajoute ici l'étape pour Super-Linter
-      - name: Run Super-Linter
-        uses: github/super-linter@v4
-        env:
-          RUN_LOCAL: false
+      - name: Check for vulnerabilities
+        run: npm audit --audit-level=high
+
+      - name: Run ESLint
+        run: npx eslint . --max-warnings=0
 
       - name: Run tests
         run: npm test
